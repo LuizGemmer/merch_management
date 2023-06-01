@@ -5,6 +5,7 @@
 package views;
 
 import Entity.IEntity;
+import orm.IORM;
 
 /**
  *
@@ -18,5 +19,13 @@ public interface IEditView {
     
     public void setIsModeNew(boolean isNew);
     
+    public void setWindowTitle(String title);
+    
+    public void setORM(IORM orm);
+    
     public void build();
+    
+    public void save();
+    
 }
+

@@ -1,11 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
 package views;
 
 import Entity.IEntity;
 import java.awt.Dimension;
+import java.util.ArrayList;
+import java.util.HashMap;
+import javax.swing.JOptionPane;
+import orm.IORM;
 import views.components.FormBuilder;
 import views.components.FormTextField;
 import views.components.IFormField;
@@ -19,11 +19,16 @@ public class EditView extends javax.swing.JFrame implements IEditView {
     private IEntity entity;
     private boolean isEditable;
     private boolean isModeNew;
+    private IORM orm;
+    private ListView parentWindow;
+    
+    private ArrayList<IFormField> formFields = new ArrayList();
     
     /**
      * Creates new form EditView
      */
-    public EditView() {
+    public EditView(ListView parentWindow) {
+        this.parentWindow = parentWindow;
         initComponents();
     }
 
@@ -39,44 +44,61 @@ public class EditView extends javax.swing.JFrame implements IEditView {
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 0), new java.awt.Dimension(50, 0), new java.awt.Dimension(50, 32767));
         filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(50, 0), new java.awt.Dimension(50, 0), new java.awt.Dimension(50, 32767));
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        editViewTitle = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btn_save = new javax.swing.JButton();
+        btn_cancel = new javax.swing.JButton();
         panel_FormArea = new javax.swing.JPanel();
 
-        setLayout(new java.awt.BorderLayout());
-        add(filler1, java.awt.BorderLayout.LINE_START);
-        add(filler2, java.awt.BorderLayout.LINE_END);
+        getContentPane().add(filler1, java.awt.BorderLayout.LINE_START);
+        getContentPane().add(filler2, java.awt.BorderLayout.LINE_END);
 
         jPanel1.setPreferredSize(new java.awt.Dimension(600, 50));
 
-        jLabel1.setText("jLabel1");
-        jPanel1.add(jLabel1);
+        editViewTitle.setText("jLabel1");
+        jPanel1.add(editViewTitle);
 
-        add(jPanel1, java.awt.BorderLayout.PAGE_START);
+        getContentPane().add(jPanel1, java.awt.BorderLayout.PAGE_START);
 
         jPanel2.setPreferredSize(new java.awt.Dimension(600, 50));
 
-        jButton1.setText("jButton1");
-        jPanel2.add(jButton1);
+        btn_save.setText("Salvar");
+        btn_save.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_saveActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btn_save);
 
-        jButton2.setText("jButton2");
-        jPanel2.add(jButton2);
+        btn_cancel.setText("Cancelar");
+        btn_cancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_cancelActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btn_cancel);
 
-        add(jPanel2, java.awt.BorderLayout.PAGE_END);
+        getContentPane().add(jPanel2, java.awt.BorderLayout.PAGE_END);
 
         panel_FormArea.setLayout(new javax.swing.BoxLayout(panel_FormArea, javax.swing.BoxLayout.PAGE_AXIS));
-        add(panel_FormArea, java.awt.BorderLayout.CENTER);
+        getContentPane().add(panel_FormArea, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btn_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btn_cancelActionPerformed
+
+    private void btn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveActionPerformed
+        this.save();
+    }//GEN-LAST:event_btn_saveActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_cancel;
+    private javax.swing.JButton btn_save;
+    private javax.swing.JLabel editViewTitle;
     private javax.swing.Box.Filler filler1;
     private javax.swing.Box.Filler filler2;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel panel_FormArea;
@@ -103,10 +125,44 @@ public class EditView extends javax.swing.JFrame implements IEditView {
         
         for(IFormField field : fields) {
             FormTextField txt_field = (FormTextField) field;
+            this.formFields.add(txt_field);
             panel_FormArea.add(txt_field);
         }
         
-        this.setSize(new Dimension(600, 200));
+        this.setSize(new Dimension(600, 500));
         this.setVisible(true);
     }
+
+    @Override
+    public void setWindowTitle(String title) {
+        this.setTitle(title);
+        this.editViewTitle.setText(title);
+    }
+    
+    @Override
+    public void setORM(IORM orm) {
+        this.orm = orm;
+    }
+    
+    @Override
+    public void save() {
+        HashMap<String, Object> formFieldsValue = new HashMap();
+        
+        for(IFormField field : this.formFields) {
+            formFieldsValue.put(field.getLabel(), field.getFieldContent());
+            System.out.println("");
+        }
+        formFieldsValue.put("Id", this.entity.getId());
+        
+        String saveError = orm.saveForm(formFieldsValue);
+        if (saveError.equals("")) {
+            JOptionPane.showMessageDialog(this, "Cadastro salvo com sucesso!");
+            this.parentWindow.updateTable();
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, "Houve um problema ao salvar seus dados: " + saveError);
+        }
+    }
+    
+    
 }

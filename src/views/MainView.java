@@ -4,7 +4,7 @@
  */
 package views;
 
-import orm.CidadeORM;
+import orm.AddressORM;
 
 /**
  *
@@ -40,7 +40,7 @@ public class MainView extends javax.swing.JFrame {
         jPanel1.setPreferredSize(new java.awt.Dimension(600, 500));
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        jMenu1.setText("Cidade");
+        jMenu1.setText("Endreços");
 
         menu_VisualizarCidade.setText("Visualizar");
         menu_VisualizarCidade.addActionListener(new java.awt.event.ActionListener() {
@@ -76,7 +76,7 @@ public class MainView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void menu_VisualizarCidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_VisualizarCidadeActionPerformed
-        new ListView(new CidadeORM(), null, "Cidades");
+        new ListView(new AddressORM(), null, "Endereços");
     }//GEN-LAST:event_menu_VisualizarCidadeActionPerformed
 
     /**

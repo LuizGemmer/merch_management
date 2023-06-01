@@ -4,6 +4,7 @@ public interface IEntity<T> {
     
     public FieldBuilderTemplate[] toEditForm();
     
-    public FieldBuilderTemplate[] toCreateForm();
-
+    public int getId();
+    
+    public FieldBuilderTemplate[] toCreateForm();    
 }

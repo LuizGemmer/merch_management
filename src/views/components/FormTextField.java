@@ -71,11 +71,8 @@ public class FormTextField extends javax.swing.JPanel implements IFormField {
     }
 
     @Override
-    public String getLabel() {
-        StringBuilder label = new StringBuilder();
-        if (this.isRequired()) label.append("* ");
-        
-        return "";
+    public String getLabel() {      
+        return this.lbl_label.getText();
     }
 
     @Override

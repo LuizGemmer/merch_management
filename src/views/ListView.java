@@ -1,8 +1,9 @@
 package views;
 
-import Entity.Cidade;
+import Entity.Address;
 import Entity.IEntity;
 import java.util.Vector;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import orm.IORM;
 
@@ -144,39 +145,75 @@ public class ListView extends javax.swing.JFrame {
         );
     }
     
+    public void updateTable() {
+        this.tableModel = this.setTableModel(txt_busca.getText());
+        jTable1.setModel(tableModel);
+        this.tableModel.fireTableDataChanged();
+    }
     
     /*
      * OnAction
      */
     private void btn_buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_buscarActionPerformed
-        // TODO add your handling code here:
+        this.updateTable();
     }//GEN-LAST:event_btn_buscarActionPerformed
 
     private void btn_adicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_adicionarActionPerformed
-        IEditView form = new EditView();
-        form.setEntity(new Cidade());
+        IEditView form = new EditView(this);
+        form.setEntity(new Address());
         form.setIsEditable(true);
         form.setIsModeNew(true);
+        form.setWindowTitle("Nova Cidade");
+        form.setORM(orm);
         form.build();
     }//GEN-LAST:event_btn_adicionarActionPerformed
 
     private void btn_editarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_editarActionPerformed
-        IEditView form = new EditView();
-        form.setEntity(this.getItemFromTable());
-        form.setIsEditable(true);
-        form.setIsModeNew(true);
-        form.build();
+        IEditView form = new EditView(this);
+        try{
+            form.setEntity(this.getItemFromTable());
+            form.setIsEditable(true);
+            form.setIsModeNew(true);
+            form.setWindowTitle("Editar Cidade");
+            form.setORM(orm);
+            form.build();
+        } catch (IndexOutOfBoundsException e) {
+            openInformationPane("Selecione um item na tabela acima para executar essa operação");
+        }
     }//GEN-LAST:event_btn_editarActionPerformed
 
-    private IEntity getItemFromTable() {
+    private IEntity getItemFromTable() throws IndexOutOfBoundsException {
         //Buscar o cliente de acordo com a linha selecionada na tabela de visualização
         int rowIndex = jTable1.getSelectedRow();
         int ormItemId = Integer.parseInt(((Vector) this.tableModel.getDataVector().elementAt(rowIndex)).elementAt(0).toString());
         return (IEntity) orm.getById(ormItemId);
     }
     
+    private void openInformationPane(String msg) {
+        JOptionPane.showMessageDialog(
+                this, 
+                msg);
+    }
+    
+    private int openConfirmationPane(String msg) {
+        return JOptionPane.showConfirmDialog(
+            this, 
+            msg);
+    }
+
     private void btn_excluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_excluirActionPerformed
-        // TODO add your handling code here:
+        try{
+            IEntity obj = this.getItemFromTable();
+            int answer = this.openConfirmationPane(
+                    "Deseja mesmo excluir esse registro? Essa operação é IRREVERSÍVEL."
+            );
+            if (answer == 0) {
+                orm.delete(obj);
+                this.updateTable();
+            }
+        } catch (IndexOutOfBoundsException e) {
+            openInformationPane("Selecione um item na tabela acima para executar essa operação");
+        }
     }//GEN-LAST:event_btn_excluirActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
