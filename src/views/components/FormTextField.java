@@ -39,6 +39,8 @@ public class FormTextField extends javax.swing.JPanel implements IFormField {
         lbl_label = new javax.swing.JLabel();
         txt_field = new javax.swing.JTextField();
 
+        setMaximumSize(new java.awt.Dimension(500, 50));
+        setMinimumSize(new java.awt.Dimension(100, 50));
         setPreferredSize(new java.awt.Dimension(500, 50));
         setLayout(new java.awt.BorderLayout());
 

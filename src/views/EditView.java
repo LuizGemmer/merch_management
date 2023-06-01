@@ -1,9 +1,11 @@
 package views;
 
 import Entity.IEntity;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.HashMap;
+import javax.swing.Box;
 import javax.swing.JOptionPane;
 import orm.IORM;
 import views.components.FormBuilder;
@@ -124,9 +126,10 @@ public class EditView extends javax.swing.JFrame implements IEditView {
         IFormField[] fields = new FormBuilder(this.entity, this.isModeNew).Build();
         
         for(IFormField field : fields) {
-            FormTextField txt_field = (FormTextField) field;
-            this.formFields.add(txt_field);
+            Component txt_field = (Component) field;
+            this.formFields.add((IFormField) txt_field);
             panel_FormArea.add(txt_field);
+            panel_FormArea.add(new Box.Filler(new Dimension(100, 5), new Dimension(500, 10), new Dimension(500, 10)));
         }
         
         this.setSize(new Dimension(600, 500));
