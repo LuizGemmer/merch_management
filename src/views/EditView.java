@@ -9,8 +9,8 @@ import javax.swing.Box;
 import javax.swing.JOptionPane;
 import orm.IORM;
 import views.components.FormBuilder;
-import views.components.FormTextField;
-import views.components.IFormField;
+import Entity.forms.FormTextField;
+import Entity.forms.IFormField;
 
 /**
  *

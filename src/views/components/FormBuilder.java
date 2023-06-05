@@ -4,8 +4,10 @@
  */
 package views.components;
 
+import Entity.forms.FormTextField;
 import Entity.FieldBuilderTemplate;
 import Entity.IEntity;
+import Entity.forms.IFormField;
 
 /**
  *
