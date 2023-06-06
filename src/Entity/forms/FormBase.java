@@ -85,9 +85,10 @@ public abstract class FormBase {
          */
         for (String key : fields.keySet()) {
             BaseField field = this.fields.get(key);
-            if (!field.validateField()) {
-                // TODO Store the exception message on the BaseField class
-                throw new Exception("Erro na validação, resolver TODO");
+            String fieldValidation = field.validateField();
+            
+            if (!fieldValidation.equals("")) {
+                throw new Exception(fieldValidation);
             }
         }
         return true;

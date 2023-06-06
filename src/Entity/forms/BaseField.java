@@ -17,9 +17,8 @@ public abstract class BaseField implements IFormField {
     private Object initialValue;
     private Validator validator = new Validator() {
         @Override
-        public boolean validate(String[] args) {
-            System.out.println("Remove this default field validator");
-            return true;
+        public String validate(String[] args) {
+            return "";
         }
     };
     private boolean required = false; 
@@ -75,15 +74,24 @@ public abstract class BaseField implements IFormField {
     }
 
     @Override
-    public boolean validateField() {
+    public String validateField(){
         /**
          * Validates the field based on the "required" class field and in
          * the validate method of the validator class.
-         * @returns true if the field passes validation, false otherwise.
+         * @return true if the field passes validation, false otherwise.
          */
-        return !(
-                this.isRequired() && this.getFieldContent().equals("")
-        ) && this.validator.validate(new String[] {});
+        StringBuilder validatorString = 
+                new StringBuilder(this.validator.validate(new String[] {}));
+        
+        if (!validatorString.toString().equals("")) {
+            validatorString.insert(0, this.getLabel()+ ": ");
+        }
+        else if (this.isRequired() && this.getFieldContent().equals("")) {
+            validatorString.append(this.getLabel());
+            validatorString.append( ": Esse campo é obrigatório");
+        }
+        
+        return validatorString.toString();
     }
 
     @Override

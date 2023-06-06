@@ -33,7 +33,7 @@ public interface IFormField {
 
     public void setRequired(boolean required);
     
-    public boolean validateField();
+    public String validateField();
     
     public boolean wasModified();
     

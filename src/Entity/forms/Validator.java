@@ -9,5 +9,10 @@ package Entity.forms;
  * @author rg
  */
 abstract class Validator {
-    public abstract boolean validate(String[] args);
+    /**
+     * Define the custom validation rules for a given form field
+     * @param args anything needed to validate
+     * @return null if valid, a error string otherwise
+     */
+    public abstract String validate(String[] args);
 }
