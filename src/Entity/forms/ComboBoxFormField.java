@@ -17,12 +17,12 @@ public class ComboBoxFormField extends BaseField {
     
     public ComboBoxFormField(Object[] comboValues) {
         this.comboModel = new DefaultComboBoxModel(comboValues);
-        super.setField(new JComboBox(comboModel));
+        this.setField(new JComboBox(comboModel));
     }
       
     @Override
     public Object getFieldContent() {
-        JComboBox field = (JComboBox) super.getField();
+        JComboBox field = (JComboBox) this.getField();
         return field.getSelectedItem();
     }
     

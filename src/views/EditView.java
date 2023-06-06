@@ -1,16 +1,13 @@
 package views;
 
 import Entity.IEntity;
-import java.awt.Component;
+import Entity.forms.FormBase;
 import java.awt.Dimension;
 import java.util.ArrayList;
-import java.util.HashMap;
 import javax.swing.Box;
 import javax.swing.JOptionPane;
 import orm.IORM;
-import views.components.FormBuilder;
-import Entity.forms.FormTextField;
-import Entity.forms.IFormField;
+import javax.swing.JPanel;
 
 /**
  *
@@ -18,14 +15,9 @@ import Entity.forms.IFormField;
  */
 public class EditView extends javax.swing.JFrame implements IEditView {
 
-    private IEntity entity;
-    private boolean isEditable;
-    private boolean isModeNew;
-    private IORM orm;
     private ListView parentWindow;
-    
-    private ArrayList<IFormField> formFields = new ArrayList();
-    
+    private FormBase form;
+
     /**
      * Creates new form EditView
      */
@@ -107,29 +99,24 @@ public class EditView extends javax.swing.JFrame implements IEditView {
     // End of variables declaration//GEN-END:variables
 
     @Override
-    public void setEntity(IEntity entity) {
-        this.entity = entity;
-    }
-
-    @Override
-    public void setIsEditable(boolean editable) {
-        this.isEditable = editable;
-    }
-
-    @Override
-    public void setIsModeNew(boolean isNew) {
-        this.isModeNew = isNew;
-    }
-
-    @Override
     public void build() {
-        IFormField[] fields = new FormBuilder(this.entity, this.isModeNew).Build();
+        /**
+         * Builds the form into the panel
+         */
+        ArrayList<JPanel> formFieldsMap = this.form.build();
         
-        for(IFormField field : fields) {
-            Component txt_field = (Component) field;
-            this.formFields.add((IFormField) txt_field);
-            panel_FormArea.add(txt_field);
-            panel_FormArea.add(new Box.Filler(new Dimension(100, 5), new Dimension(500, 10), new Dimension(500, 10)));
+        for (int i = 0; i < formFieldsMap.size(); i++) {
+            panel_FormArea.add(formFieldsMap.get(i));
+            
+            if (i != formFieldsMap.size() - 1 ) {
+                panel_FormArea.add(
+                    new Box.Filler(
+                            new Dimension(100, 5), 
+                            new Dimension(500, 10), 
+                            new Dimension(500, 10)
+                    )
+                );
+            }
         }
         
         this.setSize(new Dimension(600, 500));
@@ -143,29 +130,23 @@ public class EditView extends javax.swing.JFrame implements IEditView {
     }
     
     @Override
-    public void setORM(IORM orm) {
-        this.orm = orm;
-    }
-    
-    @Override
     public void save() {
-        HashMap<String, Object> formFieldsValue = new HashMap();
-        
-        for(IFormField field : this.formFields) {
-            formFieldsValue.put(field.getLabel(), field.getFieldContent());
-            System.out.println("");
-        }
-        formFieldsValue.put("Id", this.entity.getId());
-        
-        String saveError = orm.saveForm(formFieldsValue);
-        if (saveError.equals("")) {
-            JOptionPane.showMessageDialog(this, "Cadastro salvo com sucesso!");
-            this.parentWindow.updateTable();
-            this.dispose();
-        } else {
-            JOptionPane.showMessageDialog(this, "Houve um problema ao salvar seus dados: " + saveError);
+        try {
+            form.validateForm();
+            if (form.saveForm()) {
+                parentWindow.updateTable();
+                JOptionPane.showMessageDialog(
+                        this, 
+                        "Cadastro realizado com sucesso!");
+                this.dispose();
+            } else throw new Exception("Erro ao salvar os dados no BD!");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
         }
     }
-    
-    
+
+    @Override
+    public void setForm(FormBase form) {
+        this.form = form;
+    }    
 }

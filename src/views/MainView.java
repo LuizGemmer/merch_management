@@ -4,6 +4,7 @@
  */
 package views;
 
+import Entity.forms.AddressForm;
 import orm.AddressORM;
 
 /**
@@ -76,7 +77,8 @@ public class MainView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void menu_VisualizarCidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_VisualizarCidadeActionPerformed
-        new ListView(new AddressORM(), null, "Endereços");
+        ListView list = new ListView(new AddressORM(), null, "Endereços");
+        list.setForm(new AddressForm());
     }//GEN-LAST:event_menu_VisualizarCidadeActionPerformed
 
     /**

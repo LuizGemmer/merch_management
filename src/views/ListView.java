@@ -1,7 +1,7 @@
 package views;
 
-import Entity.Address;
 import Entity.IEntity;
+import Entity.forms.FormBase;
 import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -16,6 +16,7 @@ public class ListView extends javax.swing.JFrame {
     IORM orm;
     IEditView editView;
     DefaultTableModel tableModel;
+    FormBase form;
     
     /**
      * Creates new form ListView
@@ -135,7 +136,11 @@ public class ListView extends javax.swing.JFrame {
      * Métodos Customizados
      */
     private DefaultTableModel setTableModel(String searchTerm) {
-        String whereClause = "WHERE descricao LIKE %'"
+        /**
+         * Set the table model based on the search term in the search field
+         */
+        
+        String whereClause = "WHERE descricao ILIKE %'"
                 + searchTerm 
                 + "'%;";
         
@@ -146,6 +151,9 @@ public class ListView extends javax.swing.JFrame {
     }
     
     public void updateTable() {
+        /**
+         * Updates the table and table model in the view
+         */
         this.tableModel = this.setTableModel(txt_busca.getText());
         jTable1.setModel(tableModel);
         this.tableModel.fireTableDataChanged();
@@ -159,31 +167,42 @@ public class ListView extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_buscarActionPerformed
 
     private void btn_adicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_adicionarActionPerformed
-        IEditView form = new EditView(this);
-        form.setEntity(new Address());
-        form.setIsEditable(true);
-        form.setIsModeNew(true);
-        form.setWindowTitle("Nova Cidade");
-        form.setORM(orm);
-        form.build();
+        /**
+         * Opens a IEditView with the form specified in new mode
+         */
+        this.form.setup(null, orm);
+        this.form.populateForm();
+        
+        this.editView = new EditView(this);
+        editView.setForm(form);
+        editView.setWindowTitle("Novo Endereço");
+        editView.build();
     }//GEN-LAST:event_btn_adicionarActionPerformed
 
     private void btn_editarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_editarActionPerformed
-        IEditView form = new EditView(this);
+        /**
+         * Opens a IEditView with the form specified in new mode
+         * Opens a JOptionPane in case user did not selected a item in the table
+         */
         try{
-            form.setEntity(this.getItemFromTable());
-            form.setIsEditable(true);
-            form.setIsModeNew(true);
-            form.setWindowTitle("Editar Cidade");
-            form.setORM(orm);
-            form.build();
+            this.form.setup(this.getItemFromTable(), orm);
+            this.form.populateForm();
+            
+            this.editView = new EditView(this);
+            editView.setForm(form);
+            editView.setWindowTitle("Novo Endereço");
+            editView.build();
         } catch (IndexOutOfBoundsException e) {
             openInformationPane("Selecione um item na tabela acima para executar essa operação");
         }
     }//GEN-LAST:event_btn_editarActionPerformed
 
     private IEntity getItemFromTable() throws IndexOutOfBoundsException {
-        //Buscar o cliente de acordo com a linha selecionada na tabela de visualização
+        /**
+         * Gets the selected table item
+         * @Returns the selected Item from the table
+         * @Throws IndexOutOfBoundsException if no item is selected
+         */
         int rowIndex = jTable1.getSelectedRow();
         int ormItemId = Integer.parseInt(((Vector) this.tableModel.getDataVector().elementAt(rowIndex)).elementAt(0).toString());
         return (IEntity) orm.getById(ormItemId);
@@ -216,6 +235,11 @@ public class ListView extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btn_excluirActionPerformed
 
+    public void setForm(FormBase form) {
+        this.form = form;
+    }
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_adicionar;
     private javax.swing.JButton btn_buscar;

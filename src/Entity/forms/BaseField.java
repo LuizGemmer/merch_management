@@ -15,7 +15,13 @@ public abstract class BaseField implements IFormField {
     private JComponent component;
     private String label;
     private Object initialValue;
-    private Validator validator;
+    private Validator validator = new Validator() {
+        @Override
+        public boolean validate(String[] args) {
+            System.out.println("Remove this default field validator");
+            return true;
+        }
+    };
     private boolean required = false; 
 
     @Override

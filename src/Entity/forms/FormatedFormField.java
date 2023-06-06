@@ -16,7 +16,7 @@ public class FormatedFormField extends BaseField{
     private MaskFormatter formatter;
     
     public FormatedFormField() {
-        super.setField(new JFormattedTextField());
+        this.setField(new JFormattedTextField());
     }
 
     @Override
@@ -24,7 +24,7 @@ public class FormatedFormField extends BaseField{
         /**
          * @Returns the field text
          */
-        JFormattedTextField field =  (JFormattedTextField) super.getField();
+        JFormattedTextField field =  (JFormattedTextField) this.getField();
         return field.getText();
     }
 
@@ -40,5 +40,14 @@ public class FormatedFormField extends BaseField{
          * Sets the maskFormatter for the field
          */
         this.formatter = formatter;
+        this.formatter.install(
+                (JFormattedTextField) this.getField()
+        );
+    }
+
+    @Override
+    public void setInitialValue(Object initialValue) {
+        super.setInitialValue(initialValue);
+        ((JFormattedTextField) this.getField()).setText((String) initialValue);
     }
 }
