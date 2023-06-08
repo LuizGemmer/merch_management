@@ -74,6 +74,7 @@ public class Validation {
     }
 
     public static boolean validatePhoneNumber(String phone) {
-        return phone.trim().length() < 15;
+        String cleanedPhone = Formating.clean(phone);
+        return cleanedPhone.length() <= 14;
     }
 }

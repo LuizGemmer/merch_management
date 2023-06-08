@@ -55,7 +55,7 @@ public class ClientForm extends FormBase {
         email.setRequired(true);
         email.setValidator((value) -> {
             if (Validation.validateEmail(value)) return "";
-            else return "Email especificado é inválido!";
+            else return "valor especificado é inválido!";
         });
        
         FormatedFormField cpf = (FormatedFormField) this.addField("CPF", new FormatedFormField());
@@ -63,7 +63,7 @@ public class ClientForm extends FormBase {
         cpf.setFormatter(Formating.getCPFMask());
         cpf.setValidator((value) -> {
             if (Validation.validateCPF(value)) return "";
-            else return "Email especificado é inválido!";
+            else return "valor especificado é inválido!";
         });
 
         FormatedFormField phone = (FormatedFormField) this.addField("Telefone", new FormatedFormField());
@@ -71,7 +71,7 @@ public class ClientForm extends FormBase {
         phone.setFormatter(Formating.getPhoneMask());
         phone.setValidator((value) -> {
             if (Validation.validatePhoneNumber(value)) return "";
-            else return "Email especificado é inválido!";
+            else return "valor especificado é inválido!";
         });
     }
     
