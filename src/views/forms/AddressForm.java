@@ -2,12 +2,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Entity.forms;
+package views.forms;
 
 import Entity.Address;
 import Entity.IEntity;
-import java.text.ParseException;
-import javax.swing.text.MaskFormatter;
+import Entity.forms.BaseField;
+import Entity.forms.FormBase;
+import Entity.forms.FormatedFormField;
+import utils.Formating;
 import orm.AddressORM;
 import orm.IORM;
 
@@ -38,14 +40,13 @@ public final class AddressForm extends FormBase {
         if (e == null) address = new Address();
         else address = (Address) e;
         
+        if (address.getId() == 0) this.setFormName("Novo Endereço");
+        else this.setFormName("Editar Endereço");
+        
         super.setup(address, o);
         
         BaseField description = this.addField("Descrição", new FormatedFormField());
         description.setRequired(true);
-        
-        System.out.println("field " + description.getLabel());
-        System.out.println("map " + this.getFields().get("Descrição").getLabel());
-
         
         FormatedFormField postalCode = 
                 (FormatedFormField) this.addField(
@@ -53,11 +54,7 @@ public final class AddressForm extends FormBase {
                         new FormatedFormField()
                 );
         postalCode.setRequired(true);
-        try {
-            postalCode.setFormatter(new MaskFormatter("#####-###"));
-        } catch (ParseException ex) {
-            System.out.println(ex.getMessage());
-        }
+        postalCode.setFormatter(Formating.getPostalCodeMask());
     }
     
     @Override
@@ -93,7 +90,6 @@ public final class AddressForm extends FormBase {
         this.getFields()
                 .get("CEP")
                 .setInitialValue(address.getPostalCode());
-
     }
     
     

@@ -25,6 +25,8 @@ public abstract class FormBase {
     private IEntity item;
     private IORM orm;
     
+    private String formName;
+    
     public BaseField addField(String label, BaseField field) {
         /**
          * Adds a field to the fields hash map, using the label as key
@@ -66,6 +68,10 @@ public abstract class FormBase {
                 panel.setMinimumSize(new Dimension(100, 30));
 
                 JLabel fieldLabel = new JLabel(field.getDisplayLabel());
+                fieldLabel.setMaximumSize(new Dimension(200, 50));
+                fieldLabel.setPreferredSize(new Dimension(100, 50));
+                fieldLabel.setMinimumSize(new Dimension(50, 30));
+                
                 JComponent formField = this.fields.get(key).getField();
 
                 panel.add(fieldLabel);
@@ -135,6 +141,14 @@ public abstract class FormBase {
 
     public void setOrm(IORM orm) {
         this.orm = orm;
+    }
+
+    public String getFormName() {
+        return formName;
+    }
+
+    public void setFormName(String formName) {
+        this.formName = formName;
     }
     
     public abstract boolean validateForm() throws Exception;

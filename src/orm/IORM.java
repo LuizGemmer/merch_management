@@ -1,7 +1,6 @@
 package orm;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public interface IORM<T> {
     
@@ -22,7 +21,5 @@ public interface IORM<T> {
     public String[][] toJTable(String whereClause);
     
     public String[] getJTableColumns();
-    
-    public String saveForm(HashMap<String, Object> fieldSetMap);
     
 }

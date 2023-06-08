@@ -17,14 +17,22 @@ public class ListView extends javax.swing.JFrame {
     IEditView editView;
     DefaultTableModel tableModel;
     FormBase form;
+    String searchColumn;
+
     
     /**
      * Creates new form ListView
+     * @param orm the orm used to access the data
+     * @param editView the edit view class
+     * @param title title of the window
+     * @param searchColumn the column used for searching
      */
-    public ListView(IORM orm, IEditView editView, String title) {
+    public ListView(IORM orm, IEditView editView, String title, String searchColumn) {
         this.setTitle(title);
         this.orm = orm;
         this.editView = editView;
+        // TODO Delegate to the ORM
+        this.searchColumn = searchColumn;
         
         this.tableModel = this.setTableModel("");
         
@@ -140,7 +148,7 @@ public class ListView extends javax.swing.JFrame {
          * Set the table model based on the search term in the search field
          */
         
-        String whereClause = "WHERE descricao ILIKE %'"
+        String whereClause = "WHERE " + this.searchColumn + " ILIKE %'"
                 + searchTerm 
                 + "'%;";
         
@@ -170,13 +178,7 @@ public class ListView extends javax.swing.JFrame {
         /**
          * Opens a IEditView with the form specified in new mode
          */
-        this.form.setup(null, orm);
-        this.form.populateForm();
-        
-        this.editView = new EditView(this);
-        editView.setForm(form);
-        editView.setWindowTitle("Novo Endereço");
-        editView.build();
+        this.openForm(null);
     }//GEN-LAST:event_btn_adicionarActionPerformed
 
     private void btn_editarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_editarActionPerformed
@@ -185,18 +187,22 @@ public class ListView extends javax.swing.JFrame {
          * Opens a JOptionPane in case user did not selected a item in the table
          */
         try{
-            this.form.setup(this.getItemFromTable(), orm);
-            this.form.populateForm();
-            
-            this.editView = new EditView(this);
-            editView.setForm(form);
-            editView.setWindowTitle("Novo Endereço");
-            editView.build();
+            this.openForm(this.getItemFromTable());
         } catch (IndexOutOfBoundsException e) {
             openInformationPane("Selecione um item na tabela acima para executar essa operação");
         }
     }//GEN-LAST:event_btn_editarActionPerformed
 
+    private void openForm(IEntity entity) {
+        this.form.setup(entity, orm);
+        this.form.populateForm();
+
+        this.editView = new EditView(this);
+        editView.setForm(form);
+        editView.setWindowTitle(form.getFormName());
+        editView.build();
+    }
+    
     private IEntity getItemFromTable() throws IndexOutOfBoundsException {
         /**
          * Gets the selected table item

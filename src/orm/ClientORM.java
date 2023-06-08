@@ -1,6 +1,6 @@
 package orm;
 
-import Entity.Address;
+import Entity.Client;
 import database.ConexaoBD;
 
 import java.sql.ResultSet;
@@ -10,39 +10,41 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class AddressORM implements IORM<Address>{
+public class ClientORM implements IORM<Client>{
 
     @Override
-    public ArrayList<Address> getAll() {
+    public ArrayList<Client> getAll() {
         return query("");
     }
 
     @Override
-    public Address getById(int id) {
-        String sql = "select * from endereco where id = " + id + ";";
-        Address address = new Address();
+    public Client getById(int id) {
+        String sql = "select * from cliente where id = " + id + ";";
+        Client client = new Client();
         
         try {
             Statement st = ConexaoBD.getInstance().getConnection().createStatement();
             ResultSet querySet = st.executeQuery(sql);
             while (querySet.next()){
-                address = new Address(querySet);
+                client = new Client(querySet);
             }
         } catch (SQLException e) {
             System.out.println("sql: " + sql);
             System.out.println(e.getMessage());
         }
         
-        return address;
+        return client;
     }
 
     @Override
-    public void saveNew(Address object) {
+    public void saveNew(Client object) {
         try {
             Statement st = ConexaoBD.getInstance().getConnection().createStatement();
-            String sql = "insert into endereco values (default, '" 
-                    + object.getDescricao() + "', '" 
-                    + object.getPostalCode() + "');";
+            String sql = "insert into cliente values (default, '" 
+                    + object.getName() + "', '"
+                    + object.getEmail() + "', '" 
+                    + object.getCpf() + "', '" 
+                    + object.getPhone() + "');";
             st.executeUpdate(sql);
             System.out.println(sql);
         } catch (SQLException e) {
@@ -51,12 +53,14 @@ public class AddressORM implements IORM<Address>{
     }
 
     @Override
-    public void update(Address object) {
+    public void update(Client object) {
         try {
             Statement st = ConexaoBD.getInstance().getConnection().createStatement();
-            String sql = "update endereco set " 
-                    + "descricao='" + object.getDescricao() + "', " 
-                    + "cep='" + object.getPostalCode() + "' " 
+            String sql = "update cliente set " 
+                    + "name='" + object.getName()+ "', " 
+                    + "cpf='" + object.getCpf() + "' " 
+                    + "telefone='" + object.getPhone()+ "' " 
+                    + "email='" + object.getEmail() + "' " 
                     + "where id=" + object.getId();
             System.out.println(sql);
             st.executeUpdate(sql);
@@ -66,37 +70,37 @@ public class AddressORM implements IORM<Address>{
     }
 
     @Override
-    public ArrayList<Address> query(String whereClause) {
-        ArrayList<Address> addresses = new ArrayList();
-        String sql = "select * from endereco" + whereClause + ";";
+    public ArrayList<Client> query(String whereClause) {
+        ArrayList<Client> client = new ArrayList();
+        String sql = "select * from cliente" + whereClause + ";";
 
         try {
             Statement st = ConexaoBD.getInstance().getConnection().createStatement();
             ResultSet querySet = st.executeQuery(sql);
             while (querySet.next()){
-                addresses.add(new Address(querySet));
+                client.add(new Client(querySet));
             }
         } catch (SQLException e) {
             System.out.println("sql: " + sql);
             System.out.println(e.getMessage());
         }
 
-        return addresses;
+        return client;
     }
 
     @Override
     public String[][] toJTable(String whereClause) {
-        ArrayList<Address> linkAddresses = this.getAll();
+        ArrayList<Client> linkClients = this.getAll();
                 
-        String[][] Addresses = new String
-                [linkAddresses.size()]
+        String[][] clients = new String
+                [linkClients.size()]
                 [this.getJTableColumns().length];
         
-        for (int i = 0; i < linkAddresses.size(); i++) {
-            Addresses[i] = linkAddresses.get(i).toArray();
+        for (int i = 0; i < linkClients.size(); i++) {
+            clients[i] = linkClients.get(i).toArray();
         }
         
-        return Addresses;
+        return clients;
     }
 
     @Override
@@ -104,12 +108,14 @@ public class AddressORM implements IORM<Address>{
         return new String[] {
             "Id",
             "Nome",
-            "CEP"
+            "Email",
+            "CPF",
+            "Telefone"
         };
     }
 
     @Override
-    public void delete(Address object) {
+    public void delete(Client object) {
         this.delete(object.getId());
     }
 
@@ -118,10 +124,10 @@ public class AddressORM implements IORM<Address>{
         Statement st;
         try {
             st = ConexaoBD.getInstance().getConnection().createStatement();
-            String sql = "delete from endereco where id=" + id + ";" ;
+            String sql = "delete from cliente where id=" + id + ";" ;
             st.executeUpdate(sql);
         } catch (SQLException ex) {
-            Logger.getLogger(AddressORM.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ClientORM.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

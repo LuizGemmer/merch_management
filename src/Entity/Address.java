@@ -49,24 +49,12 @@ public final class Address implements IEntity<Address>{
         this.postalCode = postalCode;
     }
     
+    @Override
     public String[] toArray() {
         return new String[] {
             String.valueOf(this.getId()), 
             this.getDescricao(),
             String.valueOf(this.getPostalCode())
         };
-    }
-
-    @Override
-    public FieldBuilderTemplate[] toEditForm() {
-        return new FieldBuilderTemplate[] {
-            new FieldBuilderTemplate("Descrição", this.getDescricao(), "String", null, true), 
-            new FieldBuilderTemplate("CEP", String.valueOf(this.getPostalCode()), "String", null, true)  
-        };
-    }
-
-    @Override
-    public FieldBuilderTemplate[] toCreateForm() {
-        return toEditForm();
     }
 }
