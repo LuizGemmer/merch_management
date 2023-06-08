@@ -14,6 +14,7 @@ import javax.swing.text.MaskFormatter;
 import orm.ClientORM;
 import orm.IORM;
 import utils.Formating;
+import utils.Validation;
 
 /**
  *
@@ -50,17 +51,28 @@ public class ClientForm extends FormBase {
         BaseField name = this.addField("Nome", new FormatedFormField());
         name.setRequired(true);
         
-        BaseField email = this.addField("Email", new FormatedFormField());
+        FormatedFormField email = (FormatedFormField) this.addField("Email", new FormatedFormField());
         email.setRequired(true);
+        email.setValidator((value) -> {
+            if (Validation.validateEmail(value)) return "";
+            else return "Email especificado é inválido!";
+        });
        
         FormatedFormField cpf = (FormatedFormField) this.addField("CPF", new FormatedFormField());
         cpf.setRequired(true);
         cpf.setFormatter(Formating.getCPFMask());
-
+        cpf.setValidator((value) -> {
+            if (Validation.validateCPF(value)) return "";
+            else return "Email especificado é inválido!";
+        });
 
         FormatedFormField phone = (FormatedFormField) this.addField("Telefone", new FormatedFormField());
         phone.setRequired(true);
         phone.setFormatter(Formating.getPhoneMask());
+        phone.setValidator((value) -> {
+            if (Validation.validatePhoneNumber(value)) return "";
+            else return "Email especificado é inválido!";
+        });
     }
     
     @Override

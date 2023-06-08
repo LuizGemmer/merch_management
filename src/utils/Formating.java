@@ -15,7 +15,9 @@ public class Formating {
 
     public static MaskFormatter getMask(String mask) {
         try {
-            return new MaskFormatter(mask);
+            MaskFormatter mf = new MaskFormatter(mask);
+            mf.setAllowsInvalid(false);
+            return mf;
         } catch (ParseException e) {
             return null;
         }
@@ -83,14 +85,14 @@ public class Formating {
         return (formatedDate);
     }
 
-    public static String removerFormatacao(String dado) {
+    public static String clean(String value) {
         String retorno = "";
-        for (int i = 0; i < dado.length(); i++) {
-            if (dado.charAt(i) != '.' && dado.charAt(i) != '/' && dado.charAt(i) != '-') {
-                retorno = retorno + dado.charAt(i);
+        for (int i = 0; i < value.length(); i++) {
+            if (value.charAt(i) != '.' && value.charAt(i) != '/' && value.charAt(i) != '-') {
+                retorno = retorno + value.charAt(i);
             }
         }
-        return (retorno);
+        return (retorno.trim());
     }
 
     public static String getToday() {

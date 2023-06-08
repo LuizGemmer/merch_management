@@ -4,6 +4,9 @@
  */
 package Entity.forms;
 
+import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFormattedTextField;
 import javax.swing.text.MaskFormatter;
 
@@ -16,7 +19,8 @@ public class FormatedFormField extends BaseField{
     private MaskFormatter formatter;
     
     public FormatedFormField() {
-        this.setField(new JFormattedTextField());
+        JFormattedTextField field = new JFormattedTextField();
+        this.setField(field);
     }
 
     @Override
@@ -25,6 +29,12 @@ public class FormatedFormField extends BaseField{
          * @Returns the field text
          */
         JFormattedTextField field =  (JFormattedTextField) this.getField();
+        try {
+            field.commitEdit();
+        } catch (ParseException ex) {
+            Logger.getLogger(FormatedFormField.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        System.out.println("commit" + field.getValue());
         return field.getText();
     }
 

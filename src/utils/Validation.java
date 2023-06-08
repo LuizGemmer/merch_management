@@ -4,16 +4,14 @@
  */
 package utils;
 
-import javax.swing.JFormattedTextField;
-
 /**
  *
  * @author Fabricio Pretto
  */
 public class Validation {
 
-    private static final int[] pesoCPF = {11, 10, 9, 8, 7, 6, 5, 4, 3, 2};
-    private static final int[] pesoCNPJ = {6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2};
+    private static final int[] cpfWheight = {11, 10, 9, 8, 7, 6, 5, 4, 3, 2};
+    private static final int[] cnpjWheight = {6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2};
 
     private static int calcularDigito(String str, int[] peso) {
         int soma = 0;
@@ -25,25 +23,32 @@ public class Validation {
         return soma > 9 ? 0 : soma;
     }
 
-    public static boolean validarCPF(String cpf) {
-        if ((cpf == null) || (cpf.length() != 11)) {
+    public static boolean validateCPF(String cpf) {
+        String cleanedCPF = Formating.clean(cpf);
+        if ((cleanedCPF == null) || (cleanedCPF.length() != 11)) {
             return false;
         }
-        Integer digito1 = calcularDigito(cpf.substring(0, 9), pesoCPF);
-        Integer digito2 = calcularDigito(cpf.substring(0, 9) + digito1, pesoCPF);
-        return cpf.equals(cpf.substring(0, 9) + digito1.toString() + digito2.toString());
+        Integer digito1 = calcularDigito(cleanedCPF.substring(0, 9), cpfWheight);
+        Integer digito2 = calcularDigito(cleanedCPF.substring(0, 9) + digito1, cpfWheight);
+        return cleanedCPF.equals(cleanedCPF.substring(0, 9) + digito1.toString() + digito2.toString());
     }
 
-    public static boolean validarCNPJ(String cnpj) {
-        if ((cnpj == null) || (cnpj.length() != 14)) {
+    public static boolean validateCNPJ(String cnpj) {
+        String cleanedCNPJ = Formating.clean(cnpj);
+        if ((cleanedCNPJ == null) || (cleanedCNPJ.length() != 14)) {
             return false;
         }
-        Integer digito1 = calcularDigito(cnpj.substring(0, 12), pesoCNPJ);
-        Integer digito2 = calcularDigito(cnpj.substring(0, 12) + digito1, pesoCNPJ);
-        return cnpj.equals(cnpj.substring(0, 12) + digito1.toString() + digito2.toString());
+        Integer digito1 = calcularDigito(cleanedCNPJ.substring(0, 12), cnpjWheight);
+        Integer digito2 = calcularDigito(cleanedCNPJ.substring(0, 12) + digito1, cnpjWheight);
+        return cleanedCNPJ.equals(cleanedCNPJ.substring(0, 12) + digito1.toString() + digito2.toString());
+    }
+    
+    public static boolean validateEmail(String email) {
+        // TODO
+        return true;
     }
 
-    public static boolean validarDataDMA (int d, int m, int a) {
+    public static boolean validateDateDMY (int d, int m, int a) {
         
         boolean correto = true;
         
@@ -63,16 +68,12 @@ public class Validation {
         return (correto);
     }
 
-    public static boolean validarDataFormatada (String dataComFormato) {
+    public static boolean validateFormatedDate (String dataComFormato) {
         String[] data = dataComFormato.split("/");
-        return (validarDataDMA(Integer.parseInt(data[0]), Integer.parseInt(data[1]), Integer.parseInt(data[2])));
+        return (validateDateDMY(Integer.parseInt(data[0]), Integer.parseInt(data[1]), Integer.parseInt(data[2])));
     }
 
-    public static boolean validarTelefone(JFormattedTextField campo) {
-        if (campo.getText().trim().length() < 15) {
-            return false;
-        } else {
-            return true;
-        }
+    public static boolean validatePhoneNumber(String phone) {
+        return phone.trim().length() < 15;
     }
 }

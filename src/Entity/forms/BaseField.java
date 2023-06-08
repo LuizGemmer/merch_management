@@ -5,6 +5,7 @@
 package Entity.forms;
 
 import javax.swing.JComponent;
+import utils.Formating;
 
 /**
  *
@@ -15,12 +16,7 @@ public abstract class BaseField implements IFormField {
     private JComponent component;
     private String label;
     private Object initialValue;
-    private Validator validator = new Validator() {
-        @Override
-        public String validate(String[] args) {
-            return "";
-        }
-    };
+    private Validator validator = (String value) -> {return "";};
     private boolean required = false; 
 
     @Override
@@ -80,15 +76,17 @@ public abstract class BaseField implements IFormField {
          * the validate method of the validator class.
          * @return true if the field passes validation, false otherwise.
          */
-        StringBuilder validatorString = 
-                new StringBuilder(this.validator.validate(new String[] {}));
+        StringBuilder validatorString = new StringBuilder();
         
-        if (!validatorString.toString().equals("")) {
-            validatorString.insert(0, this.getLabel()+ ": ");
-        }
-        else if (this.isRequired() && this.getFieldContent().equals("")) {
+        if (
+                this.isRequired() && 
+                Formating.clean((String) this.getFieldContent()).equals("")
+            ) {
             validatorString.append(this.getLabel());
             validatorString.append( ": Esse campo é obrigatório");
+        } else if (!this.validator.validate((String) this.getFieldContent()).equals("")) {
+            validatorString.insert(0, this.getLabel()+ ": ");
+            validatorString.append(this.validator.validate((String) this.getFieldContent()));
         }
         
         return validatorString.toString();

@@ -8,11 +8,12 @@ package Entity.forms;
  *
  * @author rg
  */
-abstract class Validator {
+@FunctionalInterface
+public interface Validator {
     /**
      * Define the custom validation rules for a given form field
-     * @param args anything needed to validate
+     * @param fieldContent string representation of the field content
      * @return null if valid, a error string otherwise
      */
-    public abstract String validate(String[] args);
+    public abstract String validate(String fieldContent);
 }
