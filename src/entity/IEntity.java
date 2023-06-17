@@ -1,4 +1,4 @@
-package Entity;
+package entity;
 
 public interface IEntity<T> {
     public int getId();

@@ -4,10 +4,12 @@
  */
 package views;
 
+import entity.Client;
 import views.forms.AddressForm;
 import orm.AddressORM;
 import orm.ClientORM;
 import views.forms.ClientForm;
+import views.forms.ForeingForm;
 
 /**
  *
@@ -37,6 +39,7 @@ public class MainView extends javax.swing.JFrame {
         menu_VisualizarCidade = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(600, 500));
@@ -66,6 +69,14 @@ public class MainView extends javax.swing.JFrame {
         });
         jMenu2.add(jMenuItem1);
 
+        jMenuItem2.setText("Edição");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem2);
+
         jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
@@ -89,14 +100,25 @@ public class MainView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void menu_VisualizarCidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_VisualizarCidadeActionPerformed
-        ListView list = new ListView(new AddressORM(), null, "Endereços", "descricao");
+        CRUDListView list = new CRUDListView(new AddressORM(), null, "Endereços", "descricao");
         list.setForm(new AddressForm());
     }//GEN-LAST:event_menu_VisualizarCidadeActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        ListView list = new ListView(new ClientORM(), null, "Clientes", "nome");
+        CRUDListView list = new CRUDListView(new ClientORM(), null, "Clientes", "nome");
         list.setForm(new ClientForm());
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        EditView editView = new EditView(null);
+        ForeingForm form = new ForeingForm();
+        form.setup(new Client(), new ClientORM());
+        form.populateForm();
+
+        editView.setForm(form);
+        editView.setWindowTitle(form.getFormName());
+        editView.build();
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -138,6 +160,7 @@ public class MainView extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JMenuItem menu_VisualizarCidade;
     // End of variables declaration//GEN-END:variables

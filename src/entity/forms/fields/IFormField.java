@@ -2,8 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
  */
-package Entity.forms;
+package entity.forms.fields;
 
+import entity.forms.fields.Validator;
 import java.awt.Component;
 import javax.swing.JComponent;
 

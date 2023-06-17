@@ -3,14 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/rg/documents/development/GestaoMercadorias/src/orm/ClientORM.java</file>
-            <file>file:/home/rg/documents/development/GestaoMercadorias/src/utils/Validacao.java</file>
-            <file>file:/home/rg/documents/development/GestaoMercadorias/src/views/MainView.java</file>
-            <file>file:/home/rg/documents/development/GestaoMercadorias/src/utils/Formatacao.java</file>
-            <file>file:/home/rg/documents/development/GestaoMercadorias/src/views/forms/ClientForm.java</file>
-            <file>file:/home/rg/documents/development/GestaoMercadorias/src/views/ListView.java</file>
-            <file>file:/home/rg/documents/development/GestaoMercadorias/src/Entity/Client.java</file>
-            <file>file:/home/rg/documents/development/GestaoMercadorias/src/views/forms/AddressForm.java</file>
+            <file>file:/home/rg/documents/development/GestaoMercadorias/src/entity/forms/fields/IRelationshipField.java</file>
+            <file>file:/home/rg/documents/development/GestaoMercadorias/src/views/components/ISearchableTable.java</file>
+            <file>file:/home/rg/documents/development/GestaoMercadorias/src/entity/forms/fields/ISearchableCompliant.java</file>
+            <file>file:/home/rg/documents/development/GestaoMercadorias/src/entity/forms/fields/ForeingKeyField.java</file>
+            <file>file:/home/rg/documents/development/GestaoMercadorias/src/views/forms/ForeingForm.java</file>
         </group>
     </open-files>
 </project-private>

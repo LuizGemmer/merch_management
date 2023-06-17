@@ -4,11 +4,11 @@
  */
 package views.forms;
 
-import Entity.Client;
-import Entity.IEntity;
-import Entity.forms.BaseField;
-import Entity.forms.FormBase;
-import Entity.forms.FormatedFormField;
+import entity.Client;
+import entity.IEntity;
+import entity.forms.fields.BaseField;
+import entity.forms.FormBase;
+import entity.forms.fields.FormatedFormField;
 import java.text.ParseException;
 import javax.swing.text.MaskFormatter;
 import orm.ClientORM;

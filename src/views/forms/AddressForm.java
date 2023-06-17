@@ -4,11 +4,11 @@
  */
 package views.forms;
 
-import Entity.Address;
-import Entity.IEntity;
-import Entity.forms.BaseField;
-import Entity.forms.FormBase;
-import Entity.forms.FormatedFormField;
+import entity.Address;
+import entity.IEntity;
+import entity.forms.fields.BaseField;
+import entity.forms.FormBase;
+import entity.forms.fields.FormatedFormField;
 import utils.Formating;
 import orm.AddressORM;
 import orm.IORM;

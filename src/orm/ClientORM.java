@@ -1,6 +1,6 @@
 package orm;
 
-import Entity.Client;
+import entity.Client;
 import database.ConexaoBD;
 
 import java.sql.ResultSet;

@@ -2,9 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Entity.forms;
+package entity.forms;
 
-import Entity.IEntity;
+import entity.forms.fields.BaseField;
+import entity.IEntity;
 import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -72,7 +73,7 @@ public abstract class FormBase {
                 fieldLabel.setPreferredSize(new Dimension(100, 50));
                 fieldLabel.setMinimumSize(new Dimension(50, 30));
                 
-                JComponent formField = this.fields.get(key).getField();
+                JComponent formField = field.getField();
 
                 panel.add(fieldLabel);
                 panel.add(formField);

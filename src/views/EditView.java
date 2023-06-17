@@ -1,7 +1,7 @@
 package views;
 
-import Entity.IEntity;
-import Entity.forms.FormBase;
+import entity.IEntity;
+import entity.forms.FormBase;
 import java.awt.Dimension;
 import java.util.ArrayList;
 import javax.swing.Box;
@@ -15,13 +15,13 @@ import javax.swing.JPanel;
  */
 public class EditView extends javax.swing.JFrame implements IEditView {
 
-    private ListView parentWindow;
+    private CRUDListView parentWindow;
     private FormBase form;
 
     /**
      * Creates new form EditView
      */
-    public EditView(ListView parentWindow) {
+    public EditView(CRUDListView parentWindow) {
         this.parentWindow = parentWindow;
         initComponents();
     }

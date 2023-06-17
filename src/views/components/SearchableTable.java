@@ -1,7 +1,8 @@
-package views;
+package views.components;
 
-import Entity.IEntity;
-import Entity.forms.FormBase;
+import views.*;
+import entity.IEntity;
+import entity.forms.FormBase;
 import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -11,10 +12,9 @@ import orm.IORM;
  *
  * @author rg
  */
-public class ListView extends javax.swing.JFrame {
+public class SearchableTable extends javax.swing.JPanel implements ISearchableTable {
 
     IORM orm;
-    IEditView editView;
     DefaultTableModel tableModel;
     FormBase form;
     String searchColumn;
@@ -27,17 +27,13 @@ public class ListView extends javax.swing.JFrame {
      * @param title title of the window
      * @param searchColumn the column used for searching
      */
-    public ListView(IORM orm, IEditView editView, String title, String searchColumn) {
+    public SearchableTable(IORM orm, String title) {
         this.setTitle(title);
         this.orm = orm;
-        this.editView = editView;
-        // TODO Delegate to the ORM
-        this.searchColumn = searchColumn;
         
         this.tableModel = this.setTableModel("");
         
         initComponents();
-        this.setVisible(true);
     }
 
     /**
@@ -57,10 +53,6 @@ public class ListView extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         txt_busca = new javax.swing.JTextField();
         btn_buscar = new javax.swing.JButton();
-        jPanel3 = new javax.swing.JPanel();
-        btn_excluir = new javax.swing.JButton();
-        btn_editar = new javax.swing.JButton();
-        btn_adicionar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -97,35 +89,6 @@ public class ListView extends javax.swing.JFrame {
 
         jPanel1.add(jPanel2, java.awt.BorderLayout.PAGE_START);
 
-        jPanel3.setPreferredSize(new java.awt.Dimension(500, 50));
-        jPanel3.setLayout(new java.awt.GridLayout(1, 0, 10, 0));
-
-        btn_excluir.setText("Excluir");
-        btn_excluir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_excluirActionPerformed(evt);
-            }
-        });
-        jPanel3.add(btn_excluir);
-
-        btn_editar.setText("Editar");
-        btn_editar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_editarActionPerformed(evt);
-            }
-        });
-        jPanel3.add(btn_editar);
-
-        btn_adicionar.setText("Novo");
-        btn_adicionar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_adicionarActionPerformed(evt);
-            }
-        });
-        jPanel3.add(btn_adicionar);
-
-        jPanel1.add(jPanel3, java.awt.BorderLayout.PAGE_END);
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -158,6 +121,7 @@ public class ListView extends javax.swing.JFrame {
         );
     }
     
+    @Override
     public void updateTable() {
         /**
          * Updates the table and table model in the view
@@ -173,25 +137,6 @@ public class ListView extends javax.swing.JFrame {
     private void btn_buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_buscarActionPerformed
         this.updateTable();
     }//GEN-LAST:event_btn_buscarActionPerformed
-
-    private void btn_adicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_adicionarActionPerformed
-        /**
-         * Opens a IEditView with the form specified in new mode
-         */
-        this.openForm(null);
-    }//GEN-LAST:event_btn_adicionarActionPerformed
-
-    private void btn_editarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_editarActionPerformed
-        /**
-         * Opens a IEditView with the form specified in new mode
-         * Opens a JOptionPane in case user did not selected a item in the table
-         */
-        try{
-            this.openForm(this.getItemFromTable());
-        } catch (IndexOutOfBoundsException e) {
-            openInformationPane("Selecione um item na tabela acima para executar essa operação");
-        }
-    }//GEN-LAST:event_btn_editarActionPerformed
 
     private void openForm(IEntity entity) {
         this.form.setup(entity, orm);
@@ -226,38 +171,28 @@ public class ListView extends javax.swing.JFrame {
             msg);
     }
 
-    private void btn_excluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_excluirActionPerformed
-        try{
-            IEntity obj = this.getItemFromTable();
-            int answer = this.openConfirmationPane(
-                    "Deseja mesmo excluir esse registro? Essa operação é IRREVERSÍVEL."
-            );
-            if (answer == 0) {
-                orm.delete(obj);
-                this.updateTable();
-            }
-        } catch (IndexOutOfBoundsException e) {
-            openInformationPane("Selecione um item na tabela acima para executar essa operação");
-        }
-    }//GEN-LAST:event_btn_excluirActionPerformed
-
     public void setForm(FormBase form) {
         this.form = form;
     }
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btn_adicionar;
     private javax.swing.JButton btn_buscar;
-    private javax.swing.JButton btn_editar;
-    private javax.swing.JButton btn_excluir;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JLabel title_label;
     private javax.swing.JTextField txt_busca;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void setORM(IORM orm) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public Object getSelectedItem() {
+    }
 }
